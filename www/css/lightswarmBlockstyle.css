@@ -68,10 +68,12 @@ html, body
         /* overflow-y: scroll;*/
     }
 #block1b {
-        background-color: black;
+        background-color: ;
+        border: solid green;
         width: 95%;
         padding: 2%;
         height: 100%; 
+        position: relative;
         /* position: absolute;
         top: 10%
         bottom: 70%; */

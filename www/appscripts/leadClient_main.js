@@ -15,9 +15,9 @@ require.config({
 	}
 });
 require(
-	["mods/comm", "mods/utils", "mods/touch2Mouse",  "soundbank", "agentPlayer", "config", "leadClientConfig"],
+	[ "cells", "mods/comm", "mods/utils", "mods/touch2Mouse",  "soundbank", "agentPlayer", "config", "leadClientConfig"],
 
-	function (comm, utils, touch2Mouse,  soundbank, agentPlayer, config, leadClientConfig) {
+	function ( cellfactory, comm, utils, touch2Mouse,  soundbank, agentPlayer, config, leadClientConfig) {
 
 		var mouse_down=false;
 		var m_agent = agentPlayer();
@@ -126,25 +126,40 @@ require(
 		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// Client activity
 		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		var theCanvas = document.getElementById("score");
-		var context = theCanvas.getContext("2d");
+		var interfaceDiv = document.getElementById("block1b");
+		//interfaceDiv.width = interfaceDiv.clientWidth;
+		//interfaceDiv.height = interfaceDiv.clientHeight;
+
 		var mouseX;
 		var mouseY;
 
-		numXcells=54;
-		numYcells=30;
-		cellSizeX=theCanvas.width/numXcells;
-		cellSizeY=theCanvas.height/numYcells;
+		numXcells=6;
+		numYcells=3;
 
-		console.log("canvas width = "+ theCanvas.width + ", theCanvas.height = "+ theCanvas.height);
+		cellDivWPct=100/numXcells;
+		cellDivHPct=100/numYcells;
 
-		var m_cell=new Array(numXcells);
-		for(var i=0;i<numXcells;i++){
-			m_cell[i]=new Array(numYcells);
-			for(var j=0;j<numYcells;j++){
-				m_cell[i][j]={};
-				m_cell[i][j].x=(i*theCanvas.width)/numXcells;
-				m_cell[i][j].y=(j*theCanvas.height)/numYcells;
+		//var cellSizeX=interfaceDiv.width/numXcells
+		//var cellSizeY=interfaceDiv.height/numYcells;
+
+		//console.log("divwidth = "+ interfaceDiv.width + ", div.height = "+ interfaceDiv.height);
+		//console.log("cellSizeX = "+ cellSizeX + ", cellSizeY = "+ cellSizeY);
+
+		var m_divs = new Array(numXcells);
+
+		var foo=document.createElement("input");
+		for(var i=0;i<numYcells;i++){
+			m_divs[i]=new Array(numYcells);
+			for(var j=0;j<numXcells;j++){
+				m_divs[i][j]=cellfactory(cellDivWPct, cellDivHPct);
+        		m_divs[i][j].style.top = i*cellDivHPct + "%";
+        		m_divs[i][j].style.left = j*cellDivWPct + "%";  
+				m_divs[i][j].style.backgroundColor=utils.hslToRgb(Math.random() , .1 +.2*Math.random(), .6+.2* Math.random());
+        		      		//console.log("top = "+ m_divs[i][j].style.top + ", left = "+ m_divs[i][j].style.left);
+				interfaceDiv.appendChild(m_divs[i][j]);
+				
+				
+
 				//console.log("cell["+i+"]["+j+"]  x="+m_cell[i][j].x + ", y="+m_cell[i][j].y);
 			}
 		}
@@ -152,7 +167,7 @@ require(
 		var lastDrawTime=0;
 		var t_sinceOrigin;
 
-
+/*
 		theCanvas.addEventListener("mousedown", onMouseDown, false);
 		theCanvas.addEventListener("mouseup", onMouseUp, false);
 		theCanvas.addEventListener("mousemove", onMouseMove, false);
@@ -161,98 +176,7 @@ require(
       	theCanvas.addEventListener("touchmove", touch2Mouse.touchHandler, true);
       	theCanvas.addEventListener("touchend", touch2Mouse.touchHandler, true);
       	theCanvas.addEventListener("touchcancel", touch2Mouse.touchHandler, true);    
-
-
-		drawScreen(0);
-
-		var dispElmt;
-
-
-		function drawCell(cell, b){
-			b=Math.max(0,1-b);
-			var hx=utils.d2h(Math.floor(255*b));
-			context.fillStyle = "#" + hx+"00"+hx;
-
-			context.fillRect(cell.x,cell.y,b*cellSizeX,b*cellSizeY);
-		}
-
-
-		var deg = 0;
-
-		function drawScreen(elapsedtime) {
-
-			context.clearRect(0, 0, 1*theCanvas.width, 1*theCanvas.height);
-
-			var center=last_mousemove_event;
-			if (m_agent != undefined){		
-				center.x=Math.floor(theCanvas.width*(1+m_agent.x)/2);
-				center.y=Math.floor(theCanvas.height*(1+m_agent.y)/2);
-				//console.log("center.x="+center.x + ", center.y="+center.y);
-			}
-
-			comm.sendJSONmsg("beginGesture", {"d":[[center.x,center.y,0]], "type": "mouseContourGesture", "cont": true});
-
-
-			for (var i=0;i<numXcells;i++){
-				for (var j=0;j<numYcells;j++){
-					d=utils.distance(center,m_cell[i][j]);
-					drawCell(m_cell[i][j], d/theCanvas.width);
-				}
-			}
-
-
-			lastDrawTime=elapsedtime;
-
-		}
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	
-		// Record the time of the mouse event on the scrolling score
-		function onMouseDown(e){
-			event.preventDefault();
-			var m = utils.getCanvasMousePosition(theCanvas, e);
-
-			console.log("mouse down, x= " + m.x + ", y=", + m.y);
-
-			last_mousemove_event=m;
-			mouse_down=true;
-
-		}
-
-		function onMouseUp(e){
-			var m = utils.getCanvasMousePosition(theCanvas, e);
-		}
-
-		function onMouseMove(e){
-			if (mouse_down){
-				last_mousemove_event=utils.getCanvasMousePosition(theCanvas, e);
-				var m = last_mousemove_event;
-
-				comm.sendJSONmsg("contGesture", {"d":[[m.x,m.y,0]]});
-			}
-		}
-
-
-		//	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		var t_myMachineTime;
-		var t_count=0;
-		var timerLoop = function(){
-
-			t_myMachineTime = Date.now();
-			t_sinceOrigin = t_myMachineTime-timeOrigin;
-			
-			drawScreen(t_sinceOrigin);
-
-			m_agent && m_agent.tick(t_sinceOrigin/1000.0);
-
-
-			//--------------------------------------------------------
-
-			myrequestAnimationFrame(timerLoop);
-		};
-
-		timerLoop();  // fire it up
+*/
 
 
 		window.onbeforeunload = function (e) {

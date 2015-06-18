@@ -68,15 +68,16 @@ html, body
         /* overflow-y: scroll;*/
     }
 #block1b {
-        background-color: black;
+        background-color: #555555;
         width: 95%;
         height: 100%; 
         padding: 2%;
         /* position: absolute;
         top: 10%
-        bottom: 70%; */
+        bottom: 70%; */        
         float: left; 
         overflow: visible;
+        border: green;
         /* overflow-y: scroll; */
     }
 #block1c {

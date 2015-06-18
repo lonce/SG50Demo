@@ -1,0 +1,39 @@
+
+.cdiv {
+    background-color: yellow;
+    position: absolute;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 3px;
+}
+
+.countDisplay{
+    text-align: center;
+    background-color: white;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+
+    height: 30%;
+    width: 36%;
+    position: absolute;
+    top: 20%;
+    left: 32%;
+}
+
+.minusButton, .plusButton {
+    height: 25%;
+    width: 18%;
+    position: absolute;
+    top: 55%;
+    margin: 2px;
+}
+
+.plusButton {
+    background-color: green;
+    left: 32%;
+}
+.minusButton {
+    background-color: maroon;
+    left: 50%;
+}
