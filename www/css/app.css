@@ -15,6 +15,12 @@ html, body
 
 }
 
+h3 {
+    color:white;
+
+    text-align: center
+}
+
 #wrap {
     width: 100%;
     height: 100%;
@@ -68,8 +74,7 @@ html, body
         /* overflow-y: scroll;*/
     }
 #block1b {
-        background-color: ;
-        border: solid green;
+        margin: 4px;
         width: 95%;
         padding: 2%;
         height: 100%; 

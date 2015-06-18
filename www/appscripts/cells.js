@@ -4,7 +4,7 @@ define(
     	console.log("cell factory function created");
     	var maxCount=10;
     	var minCount=0;
-    	return function(wpct, hpct){
+    	return function(wpct, hpct, countChange){
 
 			var cdiv = document.createElement("div");
 			cdiv.className="cdiv";
@@ -17,6 +17,8 @@ define(
 			countDisplay.className="countDisplay"
 			countDisplay.type = "text" ;
 			countDisplay.value="0";
+			countDisplay.disabled=true;
+
 			cdiv.appendChild(countDisplay);
 
 
@@ -27,8 +29,11 @@ define(
 
 
         	plusButton.onclick=function(){
-        		cdiv.count=Math.min(cdiv.count+1, maxCount);
-        		countDisplay.value=cdiv.count;
+        		if (cdiv.count < maxCount){
+        			cdiv.count++;
+        			countChange(1);
+					countDisplay.value=cdiv.count;
+        		}
 			}
 
 			cdiv.appendChild(plusButton);
@@ -40,8 +45,11 @@ define(
 
 
         	minusButton.onclick=function(){
-        		cdiv.count=Math.max(cdiv.count-1, minCount);
-        		countDisplay.value=cdiv.count;
+        		if (cdiv.count > minCount){
+        			cdiv.count--;
+        			countChange(-1);
+					countDisplay.value=cdiv.count;
+        		}
   			}
 			cdiv.appendChild(minusButton);
 
