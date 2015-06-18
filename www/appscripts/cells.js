@@ -2,8 +2,7 @@ define(
     [],
     function () {
     	console.log("cell factory function created");
-    	var maxCount=10;
-    	var minCount=0;
+
     	return function(wpct, hpct, countChange){
 
 			var cdiv = document.createElement("div");
@@ -29,11 +28,9 @@ define(
 
 
         	plusButton.onclick=function(){
-        		if (cdiv.count < maxCount){
         			cdiv.count++;
         			countChange(1);
 					countDisplay.value=cdiv.count;
-        		}
 			}
 
 			cdiv.appendChild(plusButton);
@@ -45,13 +42,25 @@ define(
 
 
         	minusButton.onclick=function(){
-        		if (cdiv.count > minCount){
+        		if (cdiv.count > 0){
         			cdiv.count--;
         			countChange(-1);
 					countDisplay.value=cdiv.count;
         		}
   			}
+
 			cdiv.appendChild(minusButton);
+
+			cdiv.addMember = function(){
+    			cdiv.count++;
+    			countChange(1);
+				countDisplay.value=cdiv.count;
+			}
+
+			cdiv.zero = function(){
+				cdiv.count=0;
+				countDisplay.value=cdiv.count;
+			}
 
     		return cdiv;
     	}
