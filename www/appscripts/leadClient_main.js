@@ -85,17 +85,18 @@ require(
 		cellDivHPct=100/numYcells;
 
 		var m_cell = new Array(numXcells);
-
 		var foo=document.createElement("input");
+		var cnt = 0;
 		for(var i=0;i<numYcells;i++){
 			m_cell[i]=new Array(numYcells);
 			for(var j=0;j<numXcells;j++){
-				m_cell[i][j]=cellfactory(cellDivWPct, cellDivHPct, countChange);
+				m_cell[i][j]=cellfactory(cnt, cellDivWPct, cellDivHPct, countChange);
         		m_cell[i][j].style.top = i*cellDivHPct + "%";
         		m_cell[i][j].style.left = j*cellDivWPct + "%";  
 				m_cell[i][j].style.backgroundColor=utils.hslToRgb(Math.random() , .1 +.2*Math.random(), .6+.2* Math.random());
 
 				interfaceDiv.appendChild(m_cell[i][j]);
+				cnt++;
 			}
 		}
 
