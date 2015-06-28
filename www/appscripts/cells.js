@@ -1,7 +1,7 @@
 require.config({
         paths: {
-                "jsaSound": "http://localhost:8001"
-                //"jsaSound": "http://animatedsoundworks.com:8001"
+                //"jsaSound": "http://localhost:8001"
+                "jsaSound": "http://animatedsoundworks.com:8001"
             }
 });
 
