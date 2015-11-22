@@ -6,8 +6,8 @@ require.config({
 });
 
 define(
-    ["jsaSound/jsaModels/dongs"],
-    function (sfactory) {
+    ["jsaSound/jsaModels/dongs", "jsaSound/jsaModels/SonicSGChirps"],
+    function (dongFactory, chirpFactory) {
     	console.log("cell factory function created");
 
     	return function(idx, wpct, hpct, countChange){
@@ -67,9 +67,17 @@ define(
 
 				// start a new sound playing
 				if (numPlaying===sounds.length){
-					sounds[numPlaying]=sfactory();
-					sounds[numPlaying].setParam("Note Number", m_idx);
-					sounds[numPlaying].setParam("Gain", .1+.4*Math.random());
+					if (m_idx < 18){
+						sounds[numPlaying]=dongFactory();
+						sounds[numPlaying].setParam("Note Number", m_idx);
+						sounds[numPlaying].setParam("Gain", .2+.4*Math.random());
+						console.log("dong notenum " + m_idx);
+					} else {
+						sounds[numPlaying]=chirpFactory();
+						sounds[numPlaying].setParam("Note Number", m_idx-18+3);						
+						sounds[numPlaying].setParam("Gain", .1+.1*Math.random());
+						console.log("chirp notenum " + (m_idx-18+3));
+					}
 				} 
 				sounds[numPlaying].play();
 				numPlaying++;

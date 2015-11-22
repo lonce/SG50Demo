@@ -1,6 +1,6 @@
 
 require(
-	[ "cells",  "mods/utils", "mods/touch2Mouse",   "config"],
+	[ "cells",  "mods/utils", "mods/touch2Mouse",   "config", "submitButton"],
 
 	function ( cellfactory,  utils, touch2Mouse, config) {
 
@@ -62,7 +62,7 @@ require(
 		var mouseX;
 		var mouseY;
 
-		numXcells=6;
+		numXcells=9;
 		numYcells=3;
 
 
